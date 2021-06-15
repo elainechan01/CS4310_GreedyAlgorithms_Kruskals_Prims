@@ -66,7 +66,7 @@ Description: to read data from csv file to construct sparse / dense dataset
 """
 def read_sparseGraph():
     file = open('sparseGraph.csv')
-    temp = csv.reader(file, delimiter=',')
+    temp = csv.reader(file, delimiter=';')
 
     rows = []
     count = 0
@@ -74,10 +74,10 @@ def read_sparseGraph():
         count += 1
         if count == 1:
             continue
-        if row[0] == row[1]:
+        if row[1] == row[2]:
             continue
         else:
-            rows.append([row[2], row[0], row[1]])
+            rows.append([row[3], row[1], row[2]])
             count += 1
     rows.sort(key=lambda x: (x[1], x[2]))
     for row in rows:
