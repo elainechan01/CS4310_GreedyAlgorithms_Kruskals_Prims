@@ -1,6 +1,7 @@
 import csv
 import math
-import timeit
+import random
+from time import time
 
 class BinHeap():
     def __init__(self):
@@ -76,7 +77,7 @@ class FibNode():
         self.children = []
         self.order = 0
 
-    def add_at_end(self, t):
+    def append(self, t):
         self.children.append(t)
         self.order = self.order + 1
 
@@ -126,7 +127,7 @@ class FibHeap():
                 y = aux[order]
                 if x.key > y.key:
                     x, y = y, x
-                x.add_at_end(y)
+                x.append(y)
                 aux[order] = None
                 order = order + 1
             aux[order] = x
@@ -186,31 +187,38 @@ class Graph():
                     break
 
     def prims(self, start_city, heap_type):
+        mst = set()
         pq = BinHeap() if heap_type == 'b' else FibHeap()
-        visited = [False] * self.V
+        mst_set = [False] * self.V
 
         start_city_index = self.cities[start_city]
-        visited[start_city_index] = True
+        mst_set[start_city_index] = True
+        cost = 0.0 
+        
+        t1 = time()
         for node in self.adj_list[start_city]:
             pq.insert((start_city, node), self.distance[start_city_index][self.cities[node]])
 
-        cost = 0.0
+        
         while not pq.is_empty():
             w, cities = pq.extract_min()
             city, u = cities
             index_u = self.cities[u]
-            if not visited[index_u]:
+            if not mst_set[index_u]:
                 cost += w
-                visited[index_u] = True
+                mst.add((w, city, u))
+                mst_set[index_u] = True
                 for v in self.adj_list[u]:
-                    if not visited[self.cities[v]]:
+                    if not mst_set[self.cities[v]]:
                         pq.insert((u, v), self.distance[index_u][self.cities[v]])
-
+                        
+        self.time = time() - t1
         return cost
 
     def calc_time(self, heap_type):
-        for city in self.cities:
-            cost = self.prims(city, heap_type)
+        self.time = 0.0
+        city =list(self.cities)[random.randint(0, self.V - 1)]
+        mst, cost = self.prims(city, heap_type)
 
     def print_graph(self):
         print('Cities are :-')
@@ -247,8 +255,18 @@ def compute(rows, is_dense):
     dg.build_graph(rows)
 
     iters = 10
-    time_bin = timeit.timeit(lambda: dg.calc_time('b'), number=iters)
-    time_fib = timeit.timeit(lambda: dg.calc_time('f'), number=iters)
+    time_bin = 0.0
+     for i in range(iters):
+        dg.calc_time('b')
+        time_bin += dg.time
+    time_bin /= iters
+
+    time_fib = 0.0
+    for i in range(iters):
+        dg.calc_time('f')
+        time_fib += dg.time
+    time_fib /= iters
+    
 
     print('({} graph) Prim\'s using adjacency list and binary heap -'.format('Dense' if is_dense else 'Sparse'), time_bin, 'seconds')
     print('({} graph) Prim\'s using adjacency list and fibonacci heap -'.format('Dense' if is_dense else 'Sparse'), time_fib, 'seconds')
