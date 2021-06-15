@@ -84,6 +84,7 @@ def read_sparseGraph():
         temp = [row[0], row[2], row[1]]
         if temp in rows:
             rows.remove(temp)
+    file.close()
     return rows
 
 def read_denseGraph():
@@ -106,6 +107,7 @@ def read_denseGraph():
         temp = [row[0], row[2], row[1]]
         if temp in rows:
             rows.remove(temp)
+    file.close()
     return rows
 
 """
