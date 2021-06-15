@@ -1,6 +1,4 @@
 import csv
-import math
-import timeit
 
 # import statements here
 from heapq import heapify, heappush, heappop
@@ -59,71 +57,89 @@ class Graph:
                 self.edgeCount += 1
                 self.union(x,y)                 # join (union) the subtrees of x and y
                 self.MST.append(edge)
-        print(self.MST)
 
 """
 Description: to read data from csv file to construct sparse / dense dataset
 """
 def read_sparseGraph():
-    file = open('sparseGraph.csv')
-    temp = csv.reader(file, delimiter=';')
-
-    rows = []
-    count = 0
-    for row in temp:
-        count += 1
-        if count == 1:
-            continue
-        if row[1] == row[2]:
-            continue
+    validInput = False
+    while not validInput:
+        print("Running Kruskal's algorithm on Sparse Graph--------------------")
+        inFile = input("Enter name of file containing sparse dataset: ")
+        try:
+            file = open(inFile)
+            temp = csv.reader(file, delimiter=';')
+            rows = []
+            count = 0
+            for row in temp:
+                count += 1
+                if count == 1:
+                    continue
+                if row[1] == row[2]:
+                    continue
+                else:
+                    rows.append([row[3], row[1], row[2]])
+        except FileNotFoundError:
+            print("---------------")
+            print("File not found")
+            print("---------------")
+            validInput = False
+        except IndexError:
+            print("-----------------------------------------------------------------------------------")
+            print("Error reading file")
+            print("Ensure that file contains a header and that the dataset is in the following order: ")
+            print("<Year>;<Source>;<Destination>;<Distance>")
+            print("------------------------------------------------------------------------------------")
+            validInput = False
         else:
-            rows.append([row[3], row[1], row[2]])
             count += 1
-    rows.sort(key=lambda x: (x[1], x[2]))
-    for row in rows:
-        temp = [row[0], row[2], row[1]]
-        if temp in rows:
-            rows.remove(temp)
-    file.close()
-    return rows
+            rows.sort(key=lambda x: (x[1], x[2]))
+            for row in rows:
+                temp = [row[0], row[2], row[1]]
+                if temp in rows:
+                    rows.remove(temp)
+            file.close()
+            validInput = True
+            return rows
+
 
 def read_denseGraph():
-    file = open('denseGraph.csv')
-    temp = csv.reader(file, delimiter=';')
-
-    rows = []
-    count = 0
-    for row in temp:
-        count += 1
-        if count == 1:
-            continue
-        if row[1] == row[2]:
-            continue
+    validInput = False
+    while not validInput:
+        print("Running Kruskal's algorithm on Dense Graph--------------------")
+        inFile = input("Enter name of file containing dense dataset: ")
+        try:
+            file = open(inFile)
+            temp = csv.reader(file, delimiter=';')
+            rows = []
+            count = 0
+            for row in temp:
+                count += 1
+                if count == 1:
+                    continue
+                if row[1] == row[2]:
+                    continue
+                else:
+                    rows.append([row[3], row[1], row[2]])
+        except FileNotFoundError:
+            print("---------------")
+            print("File not found")
+            print("---------------")
+            validInput = False
+        except IndexError:
+            print("-----------------------------------------------------------------------------------")
+            print("Error reading file")
+            print("Ensure that file contains a header and that the dataset is in the following order: ")
+            print("<Year>;<Source>;<Destination>;<Distance>")
+            print("------------------------------------------------------------------------------------")
+            validInput = False
         else:
-            rows.append([row[3], row[1], row[2]])
             count += 1
-    rows.sort(key=lambda x: (x[1], x[2]))
-    for row in rows:
-        temp = [row[0], row[2], row[1]]
-        if temp in rows:
-            rows.remove(temp)
-    file.close()
-    return rows
-
-"""
-Description: main driver function to carry out Kruskal's algorithm using min-heap and union-find disjoint data structure
-and its runtime 
-"""
-def main():
-    rows = read_sparseGraph()
-    g = Graph(rows,is_dense=False)
-    iters = 10
-    runtime = timeit.timeit(lambda: g.kruskals(), number=iters)
-    print('(Sparse graph) Kruskal\'s using min-heap and union-find disjoint data structure -', runtime, 'seconds')
-    rows = read_denseGraph()
-    dense_g = Graph(rows,is_dense=True)
-    dense_runtime = timeit.timeit(lambda: dense_g.kruskals(), number=iters)
-    print('(Dense graph) Kruskal\'s using min-heap and union-find disjoint data structure -', dense_runtime, 'seconds')
-
-if __name__ == "__main__":
-    main()
+            rows.sort(key=lambda x: (x[1], x[2]))
+            for row in rows:
+                temp = [row[0], row[2], row[1]]
+                if temp in rows:
+                    rows.remove(temp)
+            file.close()
+            validInput = True
+            return rows

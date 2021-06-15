@@ -256,7 +256,7 @@ def compute(rows, is_dense):
 
     iters = 10
     time_bin = 0.0
-     for i in range(iters):
+    for i in range(iters):
         dg.calc_time('b')
         time_bin += dg.time
     time_bin /= iters
