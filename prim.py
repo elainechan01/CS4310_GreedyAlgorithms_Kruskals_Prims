@@ -148,7 +148,7 @@ class Graph():
         self.adj_list = {}
         self.distance = []
         self.cities = {}
-        self.V = 20 if is_dense else 5
+        self.V = 23 if is_dense else 5
         for i in range(self.V):
             self.distance.append([0.0] * self.V)
 
@@ -193,13 +193,12 @@ class Graph():
 
         start_city_index = self.cities[start_city]
         mst_set[start_city_index] = True
-        cost = 0.0 
-        
+        cost = 0.0
+
         t1 = time()
         for node in self.adj_list[start_city]:
             pq.insert((start_city, node), self.distance[start_city_index][self.cities[node]])
 
-        
         while not pq.is_empty():
             w, cities = pq.extract_min()
             city, u = cities
@@ -211,13 +210,13 @@ class Graph():
                 for v in self.adj_list[u]:
                     if not mst_set[self.cities[v]]:
                         pq.insert((u, v), self.distance[index_u][self.cities[v]])
-                        
+
         self.time = time() - t1
-        return cost
+        return mst, cost
 
     def calc_time(self, heap_type):
         self.time = 0.0
-        city =list(self.cities)[random.randint(0, self.V - 1)]
+        city = list(self.cities)[random.randint(0, self.V - 1)]
         mst, cost = self.prims(city, heap_type)
 
     def print_graph(self):
@@ -255,6 +254,7 @@ def compute(rows, is_dense):
     dg.build_graph(rows)
 
     iters = 10
+
     time_bin = 0.0
     for i in range(iters):
         dg.calc_time('b')
@@ -266,7 +266,6 @@ def compute(rows, is_dense):
         dg.calc_time('f')
         time_fib += dg.time
     time_fib /= iters
-    
 
     print('({} graph) Prim\'s using adjacency list and binary heap -'.format('Dense' if is_dense else 'Sparse'), time_bin, 'seconds')
     print('({} graph) Prim\'s using adjacency list and fibonacci heap -'.format('Dense' if is_dense else 'Sparse'), time_fib, 'seconds')
@@ -276,4 +275,6 @@ def compute(rows, is_dense):
 rows = read_csv()
 compute(rows, False)
 compute(rows, True)
+
+
 
