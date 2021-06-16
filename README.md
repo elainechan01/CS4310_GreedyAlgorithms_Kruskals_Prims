@@ -55,14 +55,20 @@ Improvement Percentage = (average runtime of fibonacci heap - average runtime of
 
 1. Unzip compressed folder, and compile at your preferred IDE (The IDE/Text Editor that we’ve used are: PyCharm Community Edition 2020.1)
 2. Open and run “main.py”
-3. Enter the filename for the sparse graph, if error is found, re-enter filename. (File should be in “.csv” format, has a header, and its dataset is entered in this format: <Year>;<Source>;<Destination>;<Distance>
+3. Enter the filename for the sparse graph, if error is found, re-enter filename. (File should be in “.csv” format, has a header, and its dataset is entered in this format:
+   ```
+   <Year>;<Source>;<Destination>;<Distance>
+   ```
 4. Calculations are shown
    - Runtime for Kruskal’s algorithm
    - Runtime for Prim’s algorithm using binary heap
    - Runtime for Prim’s algorithm using fibonacci heap
    - Comparison between Prim’s algorithm using binary heap and fibonacci heap
 5. Enter if you’d like to see the MST formed by the three different algorithms, if error is found, re-enter answer. (Input must be either “y” or “n”)
-6. Enter the filename for the dense graph, if error is found, re-enter filename. (File should be in “.csv” format, has a header, and its dataset is entered in this format: <Year>;<Source>;<Destination>;<Distance>
+6. Enter the filename for the dense graph, if error is found, re-enter filename. (File should be in “.csv” format, has a header, and its dataset is entered in this format: 
+   ```
+   <Year>;<Source>;<Destination>;<Distance>
+   ```
 7. Calculations are shown
    - Runtime for Kruskal’s algorithm
    - Runtime for Prim’s algorithm using binary heap
