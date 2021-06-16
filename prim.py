@@ -273,5 +273,5 @@ def compute(rows, is_dense):
 
     print('({} graph) Prim\'s using adjacency list and binary heap -'.format('Dense' if is_dense else 'Sparse'), time_bin, 'seconds')
     print('({} graph) Prim\'s using adjacency list and fibonacci heap -'.format('Dense' if is_dense else 'Sparse'), time_fib, 'seconds')
-    print('Improvement -', (abs(time_bin - time_fib) / time_bin) * 100, '%')
+    #print('Improvement -', (abs(time_bin - time_fib) / time_bin) * 100, '%')
     

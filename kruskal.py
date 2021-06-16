@@ -57,3 +57,13 @@ class Graph:
                 self.edgeCount += 1
                 self.union(x,y)                 # join (union) the subtrees of x and y
                 self.MST.append(edge)
+        return self.MST
+
+    def compute_and_display(self):
+        cost = 0
+        print('Kruskals')
+        for edge in self.MST:
+            c, src, dest = edge
+            print('Edge: FROM -', src, 'TO', dest, '(Cost: {0:.1f})'.format(float(c)))
+            cost+=float(c)
+        print('Total cost: ', cost)

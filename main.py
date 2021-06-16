@@ -27,14 +27,14 @@ def read_csv(file_path):
     return 0, rows
 
 
-def run_and_print(is_dense):
-    inFile = input("Enter file name for {} Graph: ".format('Dense' if is_dense else 'Sparse'))
+def run_and_print(g, inFile, is_dense):
     error_code, rows = read_csv(inFile)
 
     if error_code == 0:
         prims_rows = []
         for row in rows:
             prims_rows.append([row[2], row[1], row[0]])
+        g.compute_and_display()
         prim.compute_and_display(prims_rows, is_dense)
 
 def run_algo(is_dense):
@@ -52,25 +52,46 @@ def run_algo(is_dense):
             print("<Year>;<Source>;<Destination>;<Distance>")
             print("------------------------------------------------------------------------------------")
         else:
-            g = Graph(rows,is_dense=is_dense)
             iters = 10
-            runtime = timeit.timeit(lambda: g.kruskals(), number=iters)
-            print('({} graph) Kruskal\'s using min-heap and union-find disjoint data structure -'.format('Dense' if is_dense else 'Sparse'), runtime, 'seconds')
-
             prims_rows = []
-            for row in rows:
+            kruskals_rows = []
+            for row in rows[1:]:
                 prims_rows.append([row[2], row[1], row[0]])
+                kruskals_rows.append([float(row[0]), row[1], row[2]])
+            g = Graph(kruskals_rows, is_dense=is_dense)
+            runtime = timeit.timeit(lambda: g.kruskals(), number=iters)
+            print('({} graph) Kruskal\'s using min-heap and union-find disjoint data structure -'.format(
+                'Dense' if is_dense else 'Sparse'), runtime, 'seconds')
             prim.compute(prims_rows, is_dense)
+            return g, inFile
             break
 
 
-def main():
-    run_algo(False) # code to output the runtime for Sparse graph for both the algorithms
-    print()
-    run_algo(True) # code to output the runtime for Dense graph for both the algorithms
 
-    # run_and_print(True)   #( MST for dense graph using prims algorithm)
-    # run_and_print(False)  # (MST for sparse graph using prims algorithm)
+def main():
+    g, infile =run_algo(False) # code to output the runtime for Sparse graph for both the algorithms
+    print()
+    while True:
+        seeMST = input("Would you like to see the MST formed? (y/n) ")
+        if seeMST == "y":
+            run_and_print(g, infile, False)   #( MST for sparse graph using prims algorithm)
+            break
+        elif seeMST == "n":
+            break
+        else:
+            print("Invalid input.")
+    print()
+    g, infile = run_algo(True) # code to output the runtime for Dense graph for both the algorithms
+    print()
+    while True:
+        seeMST = input("Would you like to see the MST formed? (y/n) ")
+        if seeMST == "y":
+            run_and_print(g, infile, True)  # ( MST for dense graph using prims algorithm)
+            break
+        elif seeMST == "n":
+            break
+        else:
+            print("Invalid input.")
 
 
 if __name__ == "__main__":
