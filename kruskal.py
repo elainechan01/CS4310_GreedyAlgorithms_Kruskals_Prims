@@ -61,75 +61,45 @@ class Graph:
 """
 Description: to read data from csv file to construct sparse / dense dataset
 """
-def read_sparseGraph():
+def read_sparseGraph(inFile):
     print("Running Kruskal's algorithm on Sparse Graph--------------------")
-    inFile = "sparseGraph.csv"                          # filename is hardcoded
-    try:
-        file = open(inFile)
-        temp = csv.reader(file, delimiter=';')
-        rows = []
-        count = 0
-        for row in temp:
-            count += 1
-            if count == 1:
-                continue
-            if row[1] == row[2]:
-                continue
-            else:
-                rows.append([row[3], row[1], row[2]])
-    except FileNotFoundError:
-        print("---------------")
-        print("File not found")
-        print("---------------")
-    except IndexError:
-        print("-----------------------------------------------------------------------------------")
-        print("Error reading file")
-        print("Ensure that file contains a header and that the dataset is in the following order: ")
-        print("<Year>;<Source>;<Destination>;<Distance>")
-        print("------------------------------------------------------------------------------------")
-    else:
+    temp = csv.reader(inFile, delimiter=';')
+    rows = []
+    count = 0
+    for row in temp:
         count += 1
-        rows.sort(key=lambda x: (x[1], x[2]))
-        for row in rows:
-            temp = [row[0], row[2], row[1]]
-            if temp in rows:
-                rows.remove(temp)
-        file.close()
-        return rows
+        if count == 1:
+            continue
+        if row[1] == row[2]:
+            continue
+        else:
+            rows.append([row[3], row[1], row[2]])
+    count += 1
+    rows.sort(key=lambda x: (x[1], x[2]))
+    for row in rows:
+        temp = [row[0], row[2], row[1]]
+        if temp in rows:
+            rows.remove(temp)
+    return rows
 
 
-def read_denseGraph():
+def read_denseGraph(inFile):
     print("Running Kruskal's algorithm on Dense Graph--------------------")
-    inFile = "denseGraph.csv"                          # filename is hardcoded
-    try:
-        file = open(inFile)
-        temp = csv.reader(file, delimiter=';')
-        rows = []
-        count = 0
-        for row in temp:
-            count += 1
-            if count == 1:
-                continue
-            if row[1] == row[2]:
-                continue
-            else:
-                rows.append([row[3], row[1], row[2]])
-    except FileNotFoundError:
-        print("---------------")
-        print("File not found")
-        print("---------------")
-    except IndexError:
-        print("-----------------------------------------------------------------------------------")
-        print("Error reading file")
-        print("Ensure that file contains a header and that the dataset is in the following order: ")
-        print("<Year>;<Source>;<Destination>;<Distance>")
-        print("------------------------------------------------------------------------------------")
-    else:
+    temp = csv.reader(inFile, delimiter=';')
+    rows = []
+    count = 0
+    for row in temp:
         count += 1
-        rows.sort(key=lambda x: (x[1], x[2]))
-        for row in rows:
-            temp = [row[0], row[2], row[1]]
-            if temp in rows:
-                rows.remove(temp)
-        file.close()
-        return rows
+        if count == 1:
+            continue
+        if row[1] == row[2]:
+            continue
+        else:
+            rows.append([row[3], row[1], row[2]])
+    count += 1
+    rows.sort(key=lambda x: (x[1], x[2]))
+    for row in rows:
+        temp = [row[0], row[2], row[1]]
+        if temp in rows:
+            rows.remove(temp)
+    return rows
