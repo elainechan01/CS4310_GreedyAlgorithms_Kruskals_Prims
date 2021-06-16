@@ -1,4 +1,4 @@
-import csv
+
 import math
 import random
 from time import time
@@ -148,7 +148,7 @@ class Graph():
         self.adj_list = {}
         self.distance = []
         self.cities = {}
-        self.V = 23 if is_dense else 5
+        self.V = 20 if is_dense else 5
         for i in range(self.V):
             self.distance.append([0.0] * self.V)
 
@@ -218,6 +218,7 @@ class Graph():
         self.time = 0.0
         city = list(self.cities)[random.randint(0, self.V - 1)]
         mst, cost = self.prims(city, heap_type)
+        return mst, cost
 
     def print_graph(self):
         print('Cities are :-')
@@ -233,21 +234,24 @@ class Graph():
             print()
 
 
-def read_csv():
-    file = open('distances-between-main-cities-direct-routes-2013-in-kilometers.csv')
-    temp = csv.reader(file, delimiter=';')
-    
-    rows = []
-    count = 0
-    for row in temp:
-        count += 1
-        if count == 1:
-            continue
-        rows.append([row[1], row[2], row[3]])
-        count += 1
+def compute_and_display(rows, is_dense):
+    dg = Graph(is_dense=is_dense)
+    dg.build_graph(rows)
 
-    rows.sort(key=lambda x: (x[0], x[1]))
-    return rows
+    mst, cost = dg.calc_time('b')
+    print('Prims using Binary Heap')
+    for edge in mst:
+        c, from_city, to_city = edge
+        print('Edge: FROM -', from_city, 'TO', to_city, '(Cost: {})'.format(c))
+    print('Total cost:', cost)
+
+    mst, cost = dg.calc_time('f')
+    print('Prims using Fibonacci Heap')
+    for edge in mst:
+        c, from_city, to_city = edge
+        print('Edge: FROM -', from_city, 'TO', to_city, '(Cost: {})'.format(c))
+    print('Total cost:', cost)
+
 
 def compute(rows, is_dense):
     dg = Graph(is_dense=is_dense)
@@ -269,12 +273,5 @@ def compute(rows, is_dense):
 
     print('({} graph) Prim\'s using adjacency list and binary heap -'.format('Dense' if is_dense else 'Sparse'), time_bin, 'seconds')
     print('({} graph) Prim\'s using adjacency list and fibonacci heap -'.format('Dense' if is_dense else 'Sparse'), time_fib, 'seconds')
-    print('Improvement -', ((time_bin - time_fib) / time_bin) * 100, '%')
-
-
-rows = read_csv()
-compute(rows, False)
-compute(rows, True)
-
-
-
+    print('Improvement -', (abs(time_bin - time_fib) / time_bin) * 100, '%')
+    
